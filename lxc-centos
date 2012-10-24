@@ -39,7 +39,8 @@ EOF
 
 
 
-	
+   sed -i s/1-6/1-4/g $rootfs/etc/init/start-ttys.conf 
+
 	sed -i -e 's:\(Defaults *requiretty\):# \1:' $rootfs/etc/sudoers
 		
 	# create necessary devices
