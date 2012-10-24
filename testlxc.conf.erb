@@ -1,0 +1,10 @@
+#useful when installing via puppet
+#parameters required:name, network_type, network_link, ip
+#name-name of container, network_type-veth, macvlan etc, network_link-interface
+#like br0 eth0, ip-static to the container
+#example name=cent6, network_type=veth, network_link=br0, ip=192.168.0.4
+lxc.utsname = <%=name%>
+lxc.network.type = <%=network_type%>
+lxc.network.flags = up
+lxc.network.link = <%=network_link%>
+lxc.network.ipv4 = <%=ip%>
