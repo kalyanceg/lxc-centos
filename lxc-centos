@@ -42,7 +42,10 @@ EOF
    sed -i s/1-6/1-4/g $rootfs/etc/init/start-ttys.conf 
 
 	sed -i -e 's:\(Defaults *requiretty\):# \1:' $rootfs/etc/sudoers
-		
+   cp /etc/yum.repos.d/epel.repo $rootfs/etc/yum.repos.d/
+    yum  -y --installroot=$rootfs/ install puppet
+    cp /etc/puppet/puppet.conf $rootfs/etc/puppet/
+     echo "@reboot root route add default gw 192.168.0.2">>$rootfs/etc/crontab
 	# create necessary devices
 	rm $rootfs/dev/null
 	mknod -m 666 $rootfs/dev/null c 1 3

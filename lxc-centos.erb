@@ -2,7 +2,8 @@
 #erb to be served via puppet
 #variable cache-specifies where the tar image is present(tar image name should
 #be centos-6.tar)
-#variable root_password-specifies root password for container
+#variable root_password-specifies root password for container, gw specifies
+#default gateway
 
 echo "Creating centos-6 node..."
 
@@ -41,12 +42,14 @@ respawn
 exec /sbin/mingetty console
 EOF
 
-
+cp /etc/yum.repos.d/epel.repo $rootfs/etc/yum.repos.d/
+ yum -y --installroot=$rootfs/ install puppet
+ cp /etc/puppet/puppet.conf $rootfs/etc/puppet/
 
    sed -i s/1-6/1-4/g $rootfs/etc/init/start-ttys.conf 
 
 	sed -i -e 's:\(Defaults *requiretty\):# \1:' $rootfs/etc/sudoers
-		
+    echo "@reboot root route add default gw <%=gw%>">>$rootfs/etc/crontab	
 	# create necessary devices
 	rm $rootfs/dev/null
 	mknod -m 666 $rootfs/dev/null c 1 3
